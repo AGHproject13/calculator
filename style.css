@@ -1,5 +1,4 @@
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
   border: none;
@@ -19,16 +18,20 @@
 
 .display {
   flex: 1 1 20%;
-  display: flex;
   border: 1px solid black;
   border-radius: 5px;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: space-evenly;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.display .result {
+  font-size: 3rem;
 }
 
 .buttons {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   flex: 1 1 80%;
   display: flex;
   flex-direction: column;
@@ -36,9 +39,14 @@
 }
 
 .buttons .row,
-.buttons .row2cols {
+.buttons .clear-delete-row {
   display: flex;
   justify-content: space-evenly;
+}
+
+.buttons .row button,
+.buttons .clear-delete-row button {
+  font-size: 1.5rem;
 }
 
 .buttons .row button {
@@ -48,7 +56,7 @@
   padding: 5% 0;
 }
 
-.buttons .row2cols button {
+.buttons .clear-delete-row button {
   border: 1px solid black;
   border-radius: 5px;
   width: 45%;
