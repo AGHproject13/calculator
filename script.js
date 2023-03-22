@@ -3,26 +3,31 @@ const clearButton = document.querySelector(".buttons .clear-delete-row #clear");
 const deleteButton = document.querySelector(
   ".buttons .clear-delete-row #delete"
 );
+const decimalButton = document.querySelector(".buttons .row #decimal");
 const numbers = document.querySelectorAll(".buttons .row .number");
 const operators = document.querySelectorAll(".buttons .row .operator");
-const resultButton = document.querySelector(".buttons .row #equals");
+const equalsButton = document.querySelector(".buttons .row #equals");
 
 let result;
 let firstNumber;
 let secondNumber;
 let operator;
+
+// Keep track whether equalsButton was clicked,
+// So that addNumber can override the result if new number is clicked
 let equalsClicked = false;
 
 clearDisplay(); // Default display
 clearButton.addEventListener("click", clearDisplay);
 deleteButton.addEventListener("click", deleteNumber);
+decimalButton.addEventListener("click", addDecimal);
 numbers.forEach((num) => {
   num.addEventListener("click", addNumber);
 });
 operators.forEach((op) => {
   op.addEventListener("click", addOperator);
 });
-resultButton.addEventListener("click", () => {
+equalsButton.addEventListener("click", () => {
   equalsClicked = true;
   getResult();
 });
@@ -58,6 +63,7 @@ function addNumber() {
   // If an operator already chosen, then add to second number
   else if (!secondNumber) secondNumber = this.innerText;
   else secondNumber += this.innerText;
+
   updateDisplay();
 }
 
@@ -67,7 +73,9 @@ function addOperator() {
     getResult();
   }
 
+  // If an operator already chosen, that means the last result is used as the firstNumber
   equalsClicked = false;
+
   if (this.getAttribute("id") === "addition") operator = "+";
   else if (this.getAttribute("id") === "subtraction") operator = "-";
   else if (this.getAttribute("id") === "multiplication") operator = "x";
@@ -95,12 +103,24 @@ function deleteNumber() {
   updateDisplay();
 }
 
+function addDecimal() {
+  result += ".";
+  if (!operator) {
+    firstNumber += ".";
+  } else if (operator && !secondNumber) {
+    secondNumber = "0.";
+  } else if (secondNumber) {
+    secondNumber += ".";
+  }
+  updateDisplay();
+}
+
 function add(num1, num2) {
-  return num1 + num2;
+  return Math.round((num1 + num2) * 100000000) / 100000000;
 }
 
 function subtract(num1, num2) {
-  return num1 - num2;
+  return Math.round((num1 - num2) * 100000000) / 100000000;
 }
 
 function multiply(num1, num2) {
