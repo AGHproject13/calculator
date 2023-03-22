@@ -17,6 +17,9 @@ let operator;
 // So that addNumber can override the result if new number is clicked
 let equalsClicked = false;
 
+// One number can only has one decimal point
+let decimalClicked = false;
+
 clearDisplay(); // Default display
 clearButton.addEventListener("click", clearDisplay);
 deleteButton.addEventListener("click", deleteNumber);
@@ -28,8 +31,12 @@ operators.forEach((op) => {
   op.addEventListener("click", addOperator);
 });
 equalsButton.addEventListener("click", () => {
-  equalsClicked = true;
-  getResult();
+  // Check if operator was clicked, if equalsButton was clicked
+  // when there's no operator will return undefined
+  if (operator) {
+    equalsClicked = true;
+    getResult();
+  }
 });
 
 /* Functions */
@@ -73,9 +80,10 @@ function addOperator() {
     getResult();
   }
 
-  // If an operator already chosen, that means the last result is used as the firstNumber
+  // If an operator already chosen, that means the result is used as the firstNumber
   equalsClicked = false;
 
+  decimalClicked = false;
   if (this.getAttribute("id") === "addition") operator = "+";
   else if (this.getAttribute("id") === "subtraction") operator = "-";
   else if (this.getAttribute("id") === "multiplication") operator = "x";
@@ -89,6 +97,7 @@ function getResult() {
   firstNumber = "" + result;
   operator = null;
   secondNumber = null;
+  decimalClicked = false;
   updateDisplay();
 }
 
@@ -104,6 +113,7 @@ function deleteNumber() {
 }
 
 function addDecimal() {
+  if (decimalClicked) return;
   result += ".";
   if (!operator) {
     firstNumber += ".";
@@ -112,6 +122,7 @@ function addDecimal() {
   } else if (secondNumber) {
     secondNumber += ".";
   }
+  decimalClicked = true;
   updateDisplay();
 }
 
