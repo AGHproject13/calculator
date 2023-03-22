@@ -1,5 +1,8 @@
 const display = document.querySelector(".display .result");
 const clearButton = document.querySelector(".buttons .clear-delete-row #clear");
+const deleteButton = document.querySelector(
+  ".buttons .clear-delete-row #delete"
+);
 const numbers = document.querySelectorAll(".buttons .row .number");
 const operators = document.querySelectorAll(".buttons .row .operator");
 const resultButton = document.querySelector(".buttons .row #equals");
@@ -10,8 +13,9 @@ let secondNumber;
 let operator;
 let equalsClicked = false;
 
-clearDisplay();
+clearDisplay(); // Default display
 clearButton.addEventListener("click", clearDisplay);
+deleteButton.addEventListener("click", deleteNumber);
 numbers.forEach((num) => {
   num.addEventListener("click", addNumber);
 });
@@ -40,7 +44,9 @@ function clearDisplay() {
 function addNumber() {
   if (result === "0") {
     result = this.innerText;
-  } else if (equalsClicked) {
+  }
+  // If equals button is clicked and an operator isn't, then new number will replace the last result
+  else if (equalsClicked) {
     result = this.innerText;
     equalsClicked = false;
   } else {
@@ -75,7 +81,17 @@ function getResult() {
   firstNumber = "" + result;
   operator = null;
   secondNumber = null;
-  console.log(operator);
+  updateDisplay();
+}
+
+function deleteNumber() {
+  if (!operator && firstNumber !== "0") {
+    result = result.substring(0, result.length - 1);
+    firstNumber = firstNumber.substring(0, firstNumber.length - 1);
+  } else if (secondNumber && secondNumber !== "0") {
+    result = result.substring(0, result.length - 1);
+    secondNumber = secondNumber.substring(0, secondNumber.length - 1);
+  }
   updateDisplay();
 }
 
